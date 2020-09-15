@@ -268,31 +268,30 @@ export default {
             this.editPlayer()
                 .then(() => {
                     this.setPlayers();
-                    this.hideEditPopup();
-                    this.showSuccessNotify();
-                    this.resetEditForm();
                 }); 
+            this.hideEditPopup();
+            this.showSuccessNotify();
+            this.resetEditForm();
         },
         deletePl() {
             this.deletePlayer()
                 .then(() => {
                     this.setPlayers();
-                    this.deletePopupVisible = false;
-                    this.showDeletedNotify();
-                    this.idToDelete = null;
                 });
+            this.deletePopupVisible = false;
+            this.showDeletedNotify();
+            this.idToDelete = null;
         },
         add() {
             this.addPlayer()
                 .then(() => {
                     this.setPlayers();
-                    this.addPopupVisible = false;
-                    this.showSuccessNotify();
-                    this.resetAddForm();
                 });
+            this.addPopupVisible = false;
+            this.showSuccessNotify();
+            this.resetAddForm();
         },
         showSuccessNotify() {
-            debugger
             this.$nextTick(() => {
             notify("Zapisano", "success", 500);
             })

@@ -229,23 +229,22 @@ export default {
             this.addPopupVisible = false;
         },
         addG() {
-            debugger
             this.addGame()
                 .then(() => {
-                    this.resetAddForm();
                     this.setGames();
-                    this.showSuccessNotify();
-                    this.addPopupVisible = false;
                 });
+            this.showSuccessNotify();
+            this.addPopupVisible = false;
+            this.resetAddForm();
         },
         deleteG() {
             this.deleteGame()
                 .then(() => {
                     this.setGames();
-                    this.deletePopupVisible = false;
-                    this.showDeletedNotify();
-                    this.idToDelete = null;
-                })
+                });
+            this.deletePopupVisible = false;
+            this.showDeletedNotify();
+            this.idToDelete = null;
         },
         showEditPopup(data) {
             this.setDetails(data.value);
@@ -258,10 +257,10 @@ export default {
         editG() {
             this.editGame(this.editForm)
                 .then(() => {
-                    this.hideEditPopup();
-                    this.setGames();
-                    this.showSuccessNotify();
+                    this.setGames();     
             });
+            this.hideEditPopup();
+            this.showSuccessNotify();
         },
         showSuccessNotify() {
             this.$nextTick(() => {

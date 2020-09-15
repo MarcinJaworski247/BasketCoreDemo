@@ -14,7 +14,6 @@ class statisticsService {
             return axios.get(`/stats/getPlayerStats/${id}/${gameId}`);
     }
     updatePlayerStats(data) {
-        debugger
         return axios.put(`stats/updatePlayerStats`, data);
     }
     getAvgStats() {

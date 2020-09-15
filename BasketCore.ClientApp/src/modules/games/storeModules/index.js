@@ -82,7 +82,6 @@ const actions = {
         service.deleteGame(state.idToDelete);
     },
     addGame: ({state}) => {
-        debugger
         service.addGame(state.addForm);
     },
     setGames: ({commit }) => {

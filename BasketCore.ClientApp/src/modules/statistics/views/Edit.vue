@@ -153,7 +153,6 @@ export default {
         ...mapActions('statsStore', ['setDetails', 'setStats', 'setOpponentName', 'editStats']),
         ...mapMutations('statsStore', ['resetEditForm']),
         showEditPopup(data) {
-            debugger
             this.setDetails(data.value)
                 .then(() => {
                     this.editPopupVisible = true;
@@ -164,13 +163,12 @@ export default {
             this.resetEditForm();
         },
         editS() {
-            debugger
             this.editStats()
                 .then(() => {
                     this.setStats();
-                    this.hideEditPopup();
-                    this.showSuccessNotify();
             });
+            this.hideEditPopup();
+            this.showSuccessNotify();
         },
         showSuccessNotify() {
             this.$nextTick(() => {

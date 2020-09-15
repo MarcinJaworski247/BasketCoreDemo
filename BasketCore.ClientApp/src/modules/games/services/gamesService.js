@@ -16,7 +16,6 @@ class gamesService {
         return axios.put(`/game/updateGame`, data);
     }
     addGame(data) {
-        debugger
         return axios.put(`/game/addGame`, data);
     }
     getGameTypes() {

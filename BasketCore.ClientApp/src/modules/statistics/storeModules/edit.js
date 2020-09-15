@@ -28,7 +28,6 @@ const getters = {
         return state.players;
     },
     getOpponentName: (state) => {
-        debugger
         return state.opponentName;
     }  
 }
@@ -67,14 +66,12 @@ const mutations = {
 
 const actions = {
     setDetails: ({commit}, id) => {
-        debugger
         service.getPlayerStats(id, router.currentRoute.params.gameId)
             .then(response => {
                 commit('setDetails', response.data);
             })
     },
     editStats: ({state}) => {
-        debugger
         service.updatePlayerStats(state.editForm);
     },
     setStats: ({commit}, gameId) => {
@@ -84,7 +81,6 @@ const actions = {
             });
     },
     setOpponentName({commit}, gameId) {
-        debugger
         service.getOpponentName(gameId)
         .then(response => {
             commit('setOpponentName', response.data)
