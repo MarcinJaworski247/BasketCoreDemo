@@ -163,10 +163,7 @@ export default {
             this.resetEditForm();
         },
         editS() {
-            this.editStats()
-                .then(() => {
-                    this.setStats();
-            });
+            this.editStats();
             this.hideEditPopup();
             this.showSuccessNotify();
         },

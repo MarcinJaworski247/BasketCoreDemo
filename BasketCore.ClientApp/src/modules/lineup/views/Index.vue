@@ -240,7 +240,7 @@ export default {
             ])
     },
     methods: {
-        ...mapActions('lineupStore', ['setDetails', 'setPositions', 'setPlayers', 'editPlayer', 'deletePlayer', 'addPlayer']),
+        ...mapActions('lineupStore', ['setDetails', 'setPositions', 'setPlayers', 'editPlayer', 'deletePlayer', 'addPlayer', 'setLoaded']),
         ...mapMutations('lineupStore', ['resetEditForm', 'resetAddForm']),
         showDeletePopup(data) {
             this.deletePopupVisible = true;
@@ -265,28 +265,19 @@ export default {
             this.resetEditForm();
         },
         edit() {
-            this.editPlayer()
-                .then(() => {
-                    this.setPlayers();
-                }); 
+            this.editPlayer();
             this.hideEditPopup();
             this.showSuccessNotify();
             this.resetEditForm();
         },
         deletePl() {
-            this.deletePlayer()
-                .then(() => {
-                    this.setPlayers();
-                });
+            this.deletePlayer();
             this.deletePopupVisible = false;
             this.showDeletedNotify();
             this.idToDelete = null;
         },
         add() {
-            this.addPlayer()
-                .then(() => {
-                    this.setPlayers();
-                });
+            this.addPlayer();
             this.addPopupVisible = false;
             this.showSuccessNotify();
             this.resetAddForm();

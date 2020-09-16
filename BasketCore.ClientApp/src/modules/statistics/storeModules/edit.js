@@ -71,8 +71,11 @@ const actions = {
                 commit('setDetails', response.data);
             })
     },
-    editStats: ({state}) => {
-        service.updatePlayerStats(state.editForm);
+    editStats: ({state, dispatch}) => {
+        service.updatePlayerStats(state.editForm)
+            .then(() => {
+                dispatch('setStats')
+            });
     },
     setStats: ({commit}, gameId) => {
         service.getStats(gameId)

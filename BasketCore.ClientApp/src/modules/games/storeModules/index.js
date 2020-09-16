@@ -1,5 +1,6 @@
 import { getField, updateField } from 'vuex-map-fields';
 import service from "../services/gamesService.js";
+import { createStore } from 'devextreme-aspnet-data-nojquery';
 const namespaced = true;
 
 const state = {
@@ -18,7 +19,8 @@ const state = {
         court: '',
         gameType: null,
         id: null
-    }    
+    },
+    loaded: null    
 }
 
 const getters = {
@@ -34,6 +36,9 @@ const getters = {
     },
     getGameTypes: (state) => {
         return state.gameTypes;
+    },
+    setLoaded: (state, loaded) => {
+        state.loaded = loaded;
     }
 }
 
@@ -69,26 +74,46 @@ const mutations = {
 }
 
 const actions = {
+    loaded: () => { return false; },
     setDetails: ({commit}, id) => {
         service.getGameDetails(id)
             .then(response => {
                 commit('setDetails', response.data);
             })
     },
-    editGame: ({state}) => {
-        service.updateGame(state.editForm);
+    editGame: ({state, dispatch}) => {
+        service.updateGame(state.editForm)
+            .then(() => {
+                dispatch('setGames')
+            });
     },
-    deleteGame: ({state}) => {
-        service.deleteGame(state.idToDelete);
+    deleteGame: ({state, dispatch}) => {
+        service.deleteGame(state.idToDelete).then(() => {
+            dispatch('setGames')
+        });
     },
-    addGame: ({state}) => {
-        service.addGame(state.addForm);
+    addGame: ({state, dispatch}) => {
+        service.addGame(state.addForm).then(() => {
+            dispatch('setGames')
+        });
     },
     setGames: ({commit }) => {
-        service.getGames()
-            .then(response => {
-                commit('setGames', response.data);
-            });
+        let store = createStore({
+            key: 'id',
+            loadUrl: `https://localhost:44377/api/game/getGames`
+        });
+        let dataSource = {
+            store: store,
+            onLoadingChanged: function(isLoading) {
+                if(!isLoading) {
+                    if (state.loaded != null) {
+                        state.loaded;
+                    }
+                }
+            }
+        }
+        commit('setGames', dataSource);
+            
     },
     setGameTypes: ({commit}) => {
         service.getGameTypes()
@@ -96,6 +121,9 @@ const actions = {
                 commit('setGameTypes', response.data);
             });
     },
+    setLoaded: ({ commit }, loaded) => {
+        commit('setLoaded', loaded);
+    }
 }
 
 export default { state, getters, mutations, actions, namespaced };

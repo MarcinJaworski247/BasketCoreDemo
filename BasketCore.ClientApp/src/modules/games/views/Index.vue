@@ -229,19 +229,13 @@ export default {
             this.addPopupVisible = false;
         },
         addG() {
-            this.addGame()
-                .then(() => {
-                    this.setGames();
-                });
+            this.addGame();
             this.showSuccessNotify();
             this.addPopupVisible = false;
             this.resetAddForm();
         },
         deleteG() {
-            this.deleteGame()
-                .then(() => {
-                    this.setGames();
-                });
+            this.deleteGame();
             this.deletePopupVisible = false;
             this.showDeletedNotify();
             this.idToDelete = null;
@@ -255,10 +249,7 @@ export default {
             this.resetEditForm();
         },
         editG() {
-            this.editGame(this.editForm)
-                .then(() => {
-                    this.setGames();     
-            });
+            this.editGame(this.editForm);
             this.hideEditPopup();
             this.showSuccessNotify();
         },

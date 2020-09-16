@@ -1,5 +1,7 @@
 import { getField, updateField } from 'vuex-map-fields';
 import service from "../services/lineupService.js";
+import { createStore } from 'devextreme-aspnet-data-nojquery';
+
 const namespaced = true;
 
 const state = {
@@ -24,7 +26,8 @@ const state = {
     },
     players: [],
     positions: [],
-    idToDelete: null
+    idToDelete: null,
+    loaded: null
 }
 
 const getters = {
@@ -76,24 +79,42 @@ const mutations = {
         state.addForm.add_weight = null;
         state.addForm.add_birthDate = null;
         state.addForm.add_position = null;
+    },
+    setLoaded: (state, loaded) => {
+        state.loaded = loaded;
     }
 }
 
 const actions = {
+    loaded: () => { return false; },
     setDetails: ({commit}, id) => {
         service.getPlayerDetails(id)
             .then(response => {
                 commit('setDetails', response.data);
             })
     },
-    editPlayer: ({state}) => {
-        service.updatePlayer(state.editForm);
+    editPlayer: ({state, dispatch}) => {
+        service.updatePlayer(state.editForm)
+            .then(() => {
+                dispatch('setPlayers')
+            });
     },
     setPlayers: ({commit }) => {
-        service.getPlayers()
-            .then(response => {
-                commit('setPlayers', response.data);
-            });
+        let store = createStore({
+            key: 'id',
+            loadUrl: `https://localhost:44377/api/player/getPlayers`
+        });
+        let dataSource = {
+            store: store,
+            onLoadingChanged: function(isLoading) {
+                if(!isLoading) {
+                    if (state.loaded != null) {
+                        state.loaded;
+                    }
+                }
+            }
+        }
+        commit('setPlayers', dataSource); 
     },
     setPositions: ({commit}) => {
         service.getPositions()
@@ -101,11 +122,20 @@ const actions = {
                 commit('setPositions', response.data);
             });
     },
-    deletePlayer: ({state}) => {
-        service.deletePlayer(state.idToDelete);
+    deletePlayer: ({state, dispatch}) => {
+        service.deletePlayer(state.idToDelete)
+            .then(() => {
+                dispatch('setPlayers')
+            });
     },
-    addPlayer: ({state}) => {
-        service.addPlayer(state.addForm);
+    addPlayer: ({state, dispatch}) => {
+        service.addPlayer(state.addForm)
+            .then(() => {
+                dispatch('setPlayers')
+            });
+    },
+    setLoaded: ({ commit }, loaded) => {
+        commit('setLoaded', loaded);
     }
 }
 
